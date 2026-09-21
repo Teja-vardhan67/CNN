@@ -14,6 +14,7 @@ classes = ["hazardous", "organic", "recyclable"]
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    print("PREDICT REQUEST RECEIVED", flush=True)
     if "image" not in request.files:
         return jsonify({"error": "No image provided"}), 400
 
@@ -30,7 +31,9 @@ def predict():
     image_array = np.expand_dims(image_array, axis=0)
 
     # Prediction
+    print("STARTING MODEL PREDICTION", flush=True)
     predictions = model.predict(image_array, verbose=0)[0]
+    print("MODEL PREDICTION COMPLETED", flush=True)
 
     index = int(np.argmax(predictions))
     predicted_class = classes[index]
